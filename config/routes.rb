@@ -7,10 +7,9 @@ Rails.application.routes.draw do
                  registration: 'signup'
              },
              controllers: {
-                 sessions: 'sessions',
-                 registrations: 'registrations'
+                 sessions: 'users/sessions',
+                 registrations: 'users/registrations'
              }
 
   resources :organizaitons
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

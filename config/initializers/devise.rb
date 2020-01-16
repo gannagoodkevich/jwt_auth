@@ -1,14 +1,8 @@
-# frozen_string_literal: true
+require 'devise'
+require 'devise/jwt'
 
-# Use this hook to configure devise mailer, warden hooks and so forth.
-# Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-  # The secret key used by Devise. Devise uses this key to generate
-  # random tokens. Changing this key will render invalid all existing
-  # confirmation, reset password and unlock tokens in the database.
-  # Devise will use the `secret_key_base` as its `secret_key`
-  # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'b72a1a669adf404dc629b2f5d085036eb62995472f315aa57eb9e4522f424913aadcf3bfbdba359338ae0d7e49a9ef0d945df3758dc03f7037c97e64e45a1358'
+  config.secret_key = 'RANDOM_SECRET'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -18,9 +12,6 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-
-  config.secret_key = 'b7d3323cd6b40fa2bff958fa59acb0c584454250b4b6adbbfb6d9bf03558e8e259dfda2ea53a3c108a06591e3d219eabc40b62513b966a7a70554a3c2c57988'
-
   config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
   # Configure the class responsible to send e-mails.
@@ -117,7 +108,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 11
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'acbc9968fa6152333d07821be627b084594f00aa99a2d14327bc38a2f188ca5e5693f8a665fb1efb55dfb8e3a8a3923e60c43562894656f9aec7e74da35c846b'
+  # config.pepper = 'a869298ffd759b0f88a7585e8fd2fc51f15bf89906ad5d24df16161db77c43571e3d42de7786c3bc222a168566326b2730fd9e6970ec2a313ae719307908eaff'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -301,12 +292,14 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
   config.jwt do |jwt|
     jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
-    jwt.dispatch_requests = [
-        ['POST', %r{^/login$}]
-    ]
-    jwt.revocation_requests = [
-        ['DELETE', %r{^/logout$}]
-    ]
+    warn('warning: jwt.secret can not be nil') if jwt.secret.nil?
+    #  You need to tell which requests will dispatch tokens for the user that has been previously
+    #  authenticated (usually through some other warden strategy, such as one requiring username and email parameters).
+    #  To configure it, you can add the the request path to dispath_requests
+    jwt.dispatch_requests = [['POST', %r{^users/sign_in$}]]
+
+    #  You need to tell which requests will revoke incoming JWT tokens, and you can add the the request path to revocation_requests
+    jwt.revocation_requests = [['DELETE', %r{^users/sign_out$}]]
     jwt.expiration_time = 1.day.to_i
   end
   config.remember_for = 1.day.to_i

@@ -1,7 +1,15 @@
 require 'rails_helper'
+require 'faker'
+require 'factory_bot_rails'
+require 'devise'
 
-RSpec.describe 'POST /login', type: :request do
-  let(:user) { Fabricate(:user) }
+def decoded_jwt_token_from_response(response)
+  token_from_request = response.headers['Authorization'].split(' ').last
+  JWT.decode(token_from_request, ENV['DEVISE_JWT_SECRET_KEY'], true)
+end
+
+RSpec.describe 'GET /users/sign_in', type: :request do
+  let(:user) { create(:user) }
   let(:url) { '/login' }
   let(:params) do
     {
@@ -37,14 +45,5 @@ RSpec.describe 'POST /login', type: :request do
     it 'returns unathorized status' do
       expect(response.status).to eq 401
     end
-  end
-end
-
-RSpec.describe 'DELETE /logout', type: :request do
-  let(:url) { '/logout' }
-
-  it 'returns 204, no content' do
-    delete url
-    expect(response).to have_http_status(204)
   end
 end
