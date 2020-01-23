@@ -10,5 +10,5 @@ Rails.application.routes.draw do
                  sessions: 'sessions',
                  registrations: 'registrations'
              }
-  resources :organizaitons
+  resources :organizations
 end
