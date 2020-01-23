@@ -3,5 +3,6 @@ class OrganizaitonsController < ApplicationController
 
   def show
     @organization = Organization.find_by(id: params[:id])
+    not_existed_error if @organization.nil?
   end
 end

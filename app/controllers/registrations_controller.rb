@@ -5,7 +5,6 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     resource.save!
-    render json: { token: token, exp: time.strftime("%m-%d-%Y %H:%M"),
-                   username: @user.username }, status: :ok
+    render_resource(resource)
   end
 end
