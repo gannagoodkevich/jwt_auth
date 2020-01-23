@@ -15,10 +15,9 @@ class ApplicationController < ActionController::API
     render json: {
       errors: [
         {
-          status: '400',
+          status_code: 422,
           title: 'Bad Request',
-          detail: resource.errors,
-          code: '100'
+          detail: resource.errors
         }
       ]
     }, status: :bad_request

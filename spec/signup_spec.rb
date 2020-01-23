@@ -4,10 +4,10 @@ RSpec.describe 'POST /signup', type: :request do
   let(:url) { '/users' }
   let(:params) do
     {
-        user: {
-            email: 'user@example.com',
-            password: 'password'
-        }
+      user: {
+        email: 'user@example.com',
+        password: 'password'
+      }
     }
   end
 

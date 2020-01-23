@@ -13,10 +13,10 @@ RSpec.describe 'GET /users/sign_in', type: :request do
   let(:url) { '/login' }
   let(:params) do
     {
-        user: {
-            email: user.email,
-            password: user.password
-        }
+      user: {
+        email: user.email,
+        password: user.password
+      }
     }
   end
 
